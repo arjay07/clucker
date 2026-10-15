@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: clucker
+      MYSQL_USER: clucker
+      MYSQL_PASSWORD: clucker
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uclucker", "-pclucker"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  server:
+    build: ./server
+    environment:
+      APP_PORT: 8080
+      APP_URL: http://localhost:4200
+      DB_HOST: jdbc:mysql://mysql:3306/clucker?useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: clucker
+      DB_PASSWORD: clucker
+      # Local-only key; must be at least 32 characters for HS256
+      JWT_SECRET_KEY: local-dev-only-jwt-secret-key-change-me
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./web/src:/app/src
+    depends_on:
+      - server
+
+volumes:
+  mysql-data:

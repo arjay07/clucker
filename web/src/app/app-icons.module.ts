@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
+import {IconDefinition, IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleDown,
   faBell,
   faChevronLeft,
   faChevronRight, faCircle, faCircleNotch, faComment, faCommenting,
-  faCompass, faEdit, faEgg, faEggFried, faEllipsisVertical,
-  faHome, faMinus, faPaperPlaneTop,
+  faCompass, faEdit, faEgg, faEllipsisVertical,
+  faHome, faMinus, faPaperPlane,
   faPlus, faSave, faSearch, faShare, faShareNodes,
-  faSpinner, faTimes, faUser, faUserCheck, faUserCircle, faUserMinus, faUserPlus, faX
-} from '@fortawesome/pro-solid-svg-icons';
-import {faSpinnerThird, faUsers} from '@fortawesome/pro-duotone-svg-icons';
+  faSpinner, faTimes, faUser, faUserCheck, faUserCircle, faUserMinus, faUserPlus, faUsers, faX
+} from '@fortawesome/free-solid-svg-icons';
+
+// Registers a free icon under the name of a Font Awesome Pro icon so templates
+// that reference Pro icons keep working without a Pro license.
+const alias = (icon: IconDefinition, prefix: IconPrefix, iconName: string): IconDefinition =>
+  ({...icon, prefix, iconName: iconName as IconName});
 
 const icons: IconDefinition[] = [
   faChevronRight,
@@ -33,9 +37,6 @@ const icons: IconDefinition[] = [
   faTimes,
   faX,
   faCircleNotch,
-  faSpinnerThird,
-  faPaperPlaneTop,
-  faChevronLeft,
   faEllipsisVertical,
   faEdit,
   faAngleDown,
@@ -45,7 +46,11 @@ const icons: IconDefinition[] = [
   faUserMinus,
   faUser,
   faUsers,
-  faEggFried
+  alias(faCircleNotch, 'fas', 'spinner-third'),
+  alias(faCircleNotch, 'fad', 'spinner-third'),
+  alias(faUsers, 'fad', 'users'),
+  alias(faPaperPlane, 'fas', 'paper-plane-top'),
+  alias(faEgg, 'fas', 'egg-fried')
 ];
 
 @NgModule({
