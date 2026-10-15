@@ -1,0 +1,23 @@
+@tailwind base
+@tailwind components
+@tailwind utilities
+@import '../node_modules/animate.css/animate.min.css'
+@import './app-components'
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap')
+
+html
+  font-family: 'Open Sans', sans-serif
+  -webkit-tap-highlight-color: transparent
+  -ms-overflow-style: none
+  ::-webkit-scrollbar
+    display: none
+
+.animate__fastest
+  animation-duration: 0.3s
+
+.ngx-ptr-loadingbar-container
+    z-index: -1 !important
+
+body
+  overscroll-behavior-y: contain
+  overscroll-behavior-x: none

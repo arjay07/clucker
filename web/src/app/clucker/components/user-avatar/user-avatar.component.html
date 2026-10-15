@@ -1,0 +1,16 @@
+<div *ngIf="user && !loading; else spinner">
+  <button [ngSwitch]="mode" [routerLink]="['/', 'user', user.username]">
+  <span *ngSwitchCase="'default'">
+    <fa-layers [size]="iconSize" [fixedWidth]="true">
+      <fa-icon icon="circle" [styles]="userStyle"></fa-icon>
+      <fa-icon icon="user-circle" [styles]="circleStyle"></fa-icon>
+    </fa-layers>
+  </span>
+    <span *ngSwitchCase="'image'">
+    Image
+  </span>
+  </button>
+</div>
+<ng-template #spinner>
+  <fa-duotone-icon [size]="iconSize" class="text-primary opacity-50" [spin]="true" [icon]="['fad', 'spinner-third']"></fa-duotone-icon>
+</ng-template>

@@ -1,0 +1,62 @@
+<div class="w-screen sticky top-0 z-10 bg-white shadow">
+  <div class="py-1 w-full flex justify-between">
+    <button class="p-5 active:scale-90 transition-all animate__faster animate__animated animate__fadeInLeft" (click)="goBack()">
+      <fa-icon icon="chevron-left" size="xl"></fa-icon>
+    </button>
+    <div class="absolute right-0 top-0">
+      <app-dropdown [dropdownItems]="dropdownItems"></app-dropdown>
+    </div>
+  </div>
+  <div class="my-2 w-screen flex justify-center items-center">
+    <app-user-avatar iconSize="6x" [user]="user"></app-user-avatar>
+  </div>
+  <div class="my-2 text-center font-bold text-xl" *ngIf="user">
+    {{user.username}}
+  </div>
+  <div class="my-2 text-center" *ngIf="user && !currentUserProfile">
+    <app-follow-button [user]="user"></app-follow-button>
+  </div>
+  <div class="mb-2 mt-4 flex justify-center items-center font-bold text-lg text-primary" *ngIf="user">
+    <div class="text-center mx-2">
+      {{user.eggRating | abbreviateCount}} <fa-icon icon="egg"></fa-icon>
+    </div>
+    <div class="text-center mx-2">
+      {{user.followersCount | abbreviateCount}} <fa-duotone-icon [icon]="['fad', 'users']"></fa-duotone-icon>
+    </div>
+  </div>
+  <div class="my-3 text-center" *ngIf="user">
+    <span class="text-sm p-2 text-gray-400" *ngIf="!currentUserProfile; else editBioComponent">
+      {{user.bio}}
+    </span>
+    <ng-template #editBioComponent>
+      <app-edit-bio [user]="user"></app-edit-bio>
+    </ng-template>
+  </div>
+  <div class="mt-3 mx-auto">
+    <div class="flex justify-evenly max-w-lg mx-auto">
+      <button class="p-3 border-b border-b-2 w-full active:bg-gray-50"
+              (click)="currentPage = 'MY_CLUCKS'"
+              type="button"
+              [ngClass]="{ 'border-b-primary': currentPage === 'MY_CLUCKS' }">
+        {{ currentUserProfile ? 'My Clucks' : 'Clucks'}}
+      </button>
+      <div class="w-[1px] bg-gray-200 my-1"></div>
+      <button class="p-3 border-b border-b-2 w-full active:bg-gray-50"
+              type="button"
+              (click)="currentPage = 'LIKED_CLUCKS'"
+              [ngClass]="{ 'border-b-primary': currentPage === 'LIKED_CLUCKS' }">
+        Liked Clucks
+      </button>
+    </div>
+  </div>
+</div>
+<div class="container mx-auto max-w-lg" [ngSwitch]="currentPage">
+  <ng-container *ngSwitchCase="'MY_CLUCKS'">
+    <app-cluck-loader *ngIf="user" [mode]="currentUserProfile ? 'MY_CLUCKS' : 'USER_CLUCKS'" [userId]="user.id">
+    </app-cluck-loader>
+  </ng-container>
+  <ng-container *ngSwitchCase="'LIKED_CLUCKS'">
+    <app-cluck-loader *ngIf="user" mode="LIKED_CLUCKS" [userId]="user.id">
+    </app-cluck-loader>
+  </ng-container>
+</div>
